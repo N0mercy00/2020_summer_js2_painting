@@ -9,6 +9,8 @@ body{
     padding-top: 50px;
     /*대충 초기 설정 같은거 배경색 폰트 디스플레이 어떻게 할지 등등 자세한건 문서 내부 링크 참조*/
 
+    padding: 50px 0px;
+
 }
 
 .canvas{
@@ -23,6 +25,43 @@ body{
 .controls{
     margin-top: 80px;
     /*캔버스랑 색이랑 떨어트린거*/
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*요 세줄은 버튼 스타일준것이야 아마도 가운데 정렬을 시킨거같아*/
+}
+
+.controls .controls_btns{
+    margin-bottom: 30px;
+    /*마진은 알지?*/
+}
+
+.controls_btns button{
+    all:unset;
+    cursor: pointer;
+    background-color:white ;
+    padding: 5px 0px;
+    width: 80px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow:0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); ;
+    /*버튼에 커서가면 커서모양 바뀌기 버튼 배경 하양 버튼간 간격 중앙배치 버튼 둥그렇게+그림자*/
+
+    border: 2px solid rgba(0,0,0,0.2);
+    color:rgba(0,0,0,0.7) ;
+    /*버튼 경계 진하게 버튼 내부 글씨 연하게*/
+    
+    text-transform: uppercase ;
+    font-weight: 800;
+    font-size: 12px;
+    /*대문자로 변경, 버튼 내부 글씨 굵게 글씨크기12*/
+}
+
+
+.controls_btns button:active{
+    transform:scale(0.98) ; 
+    /*눌렸을때 효과준거 작아졌다 커졌다 와리가리*/  
 }
 
 .controls .controls_colors{
@@ -38,4 +77,9 @@ body{
     cursor: pointer;/*커서 활성화*/
     box-shadow:0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08); ;
     /*각 색들 크기 및 그림자 설정해준거야*/ 
+}
+
+.controls .controls_range{
+    margin-bottom: 30px;
+    /*마진은 알지? range 조절 바에 마진넣어줌*/
 }
