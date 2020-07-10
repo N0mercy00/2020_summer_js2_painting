@@ -1,12 +1,18 @@
 const canvas =document.getElementById("jsCanvas");
 /*캔버스를 먼저 가져와 준다 */
 
-const colors=document.getElementsByClassName("jsColor");
-/*html에서 클래스 아이디를 준 각각의 색을 가져오기 위한 코드*/
-
 const ctx= canvas.getContext("2d");
 /*캔버스 내부 픽셀들을 다루기 위해서 context 선언
 context는 캔버스 내부에서 픽셀들을 다루기 위한 것들*/
+
+const colors=document.getElementsByClassName("jsColor");
+/*html에서 클래스 아이디를 준 각각의 색을 가져오기 위한 코드*/
+
+const range = document.getElementById("jsRange");
+/*붓크기를 조절하기 위해 html에서 jsRange라는 아이디를 가진 요소를 가져온다*/
+
+const mode = document.getElementById("jsMode");
+/*버튼 모드 변경을 위한 버튼 아이디 요소 가져온다*/
 
 canvas.width=700;
 canvas.height=700;
@@ -18,8 +24,10 @@ ctx.lineWidth=2.5;
 /*붓 두께 */
 
 let painting =false;
-/*현재 그림 그리는중인지(클릭중인지) 파악하는 변수*/
+/*현재 그림 그리는중인지(클릭중인지) 속성값 갖는 변수*/
 
+let filling = false;
+/*현재 그리기 모드가 채우기인지 그리기인지 속성값 갖는 변수*/
 
 function startPainting(){
     painting=true;
@@ -77,6 +85,24 @@ function handleColorClick(event){
 }
 /*컬러를 눌렀을때 실행되는 함수 색을 바꿔주는 기능을 한다*/
 
+function handleRangeChange(event){
+    console.log(event.target.value);
+    const size = event.target.value;
+    ctx.lineWidth=size;
+}
+/*range 변경시 바꿔주는 함수*/
+
+function handleModeClick(){
+    if(filling===true){
+        filling=false;
+        mode.innerText="Fill";
+    }else{
+        filling=true;
+        mode.innerText="Paint"
+    }
+}
+/*모드 변경*/
+
 if(canvas){
     canvas.addEventListener("mousemove", onMouseMove);
     /*캔버스가 있는지 확인 있다면 해당 함수 실행*/
@@ -92,3 +118,11 @@ Array.from(colors).forEach(color=>color.addEventListener("click",handleColorClic
 /*각 컬러들을 배열로 가져와서 각각에 클릭 이벤트 리스너를 달아주는코드*/
 /*여기 적힌 color는 왜 colors가 아니고 color냐??
 저건 걍 배열요소 대표하는 이름 이름을 감자로 바꿔도 작동 잘된다 */
+
+if(range){
+    range.addEventListener("input",handleRangeChange);
+}
+
+if(mode){
+    mode.addEventListener("click",handleModeClick);
+}
