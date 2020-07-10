@@ -1,5 +1,9 @@
 const canvas =document.getElementById("jsCanvas");
 /*캔버스를 먼저 가져와 준다 */
+
+const colors=document.getElementsByClassName("jsColor");
+/*html에서 클래스 아이디를 준 각각의 색을 가져오기 위한 코드*/
+
 const ctx= canvas.getContext("2d");
 /*캔버스 내부 픽셀들을 다루기 위해서 context 선언
 context는 캔버스 내부에서 픽셀들을 다루기 위한 것들*/
@@ -56,13 +60,6 @@ ctx.strokeStyle은 그릴 선이 갖는 색을 지정해준다.
 
 
 
-
-
-function onMouseDown(event){
-    painting =true;
-    /*클릭시 활성화*/
-}
-
 function stopPainting(){
     painting=false;
     /*페인팅 상대 중지*/
@@ -72,6 +69,13 @@ function onMouseUp(event){
     stopPainting();
     /*손때면 다시 비활성화*/
 }
+
+function handleColorClick(event){
+    const color =event.target.style.backgroundColor;//클릭된 컬러의 속성값을 가져온다
+    ctx.strokeStyle=color; //context 색을 바꿔준다 (override)
+    //즉 오버로드를 통해서 타겟(클릭된) 속성에 맞는 값으로 strokeStyle을 변경 (색바꿔준다는뜻)
+}
+/*컬러를 눌렀을때 실행되는 함수 색을 바꿔주는 기능을 한다*/
 
 if(canvas){
     canvas.addEventListener("mousemove", onMouseMove);
@@ -83,3 +87,8 @@ if(canvas){
     canvas.addEventListener("mouseleave", stopPainting);
     /*작업도중 커서가 캔버스 밖으로 나갈경우 역시 활성화 중지*/
 }
+
+Array.from(colors).forEach(color=>color.addEventListener("click",handleColorClick));
+/*각 컬러들을 배열로 가져와서 각각에 클릭 이벤트 리스너를 달아주는코드*/
+/*여기 적힌 color는 왜 colors가 아니고 color냐??
+저건 걍 배열요소 대표하는 이름 이름을 감자로 바꿔도 작동 잘된다 */
