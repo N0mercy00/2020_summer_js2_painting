@@ -14,14 +14,28 @@ const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 /*버튼 모드 변경을 위한 버튼 아이디 요소 가져온다*/
 
-canvas.width=700;
-canvas.height=700;
+const INITIAL_COLOR="#2c2c2c";
+
+const CANVAS_SIZE=700;
+/*색 촉기화*/
+
+canvas.width= CANVAS_SIZE;
+canvas.height= CANVAS_SIZE;
 /*pixel modifier 선언 얘 없으면 작동안해*/
 
-ctx.strokeStyle="#2c2c2c";
+ctx.strokeStyle=INITIAL_COLOR;
 /*캔버스 내부 색을 칠하기 위해 사용되는 strokeStyle*/
+ctx.fillStyle=INITIAL_COLOR;
+/*캔버스 채우기 색 초기화*/
 ctx.lineWidth=2.5;
 /*붓 두께 */
+
+/*
+ctx.fillStyle="green";
+ctx.fillRect(50,20,100,49);
+//fill 기능 구현을 위한 프로토타입 (사용X) 원리만 보는거
+//fillStyle은 색을 담당해주고 fillRect은 시작 좌표, 크기 만큼 색칠해준다
+*/
 
 let painting =false;
 /*현재 그림 그리는중인지(클릭중인지) 속성값 갖는 변수*/
@@ -82,6 +96,9 @@ function handleColorClick(event){
     const color =event.target.style.backgroundColor;//클릭된 컬러의 속성값을 가져온다
     ctx.strokeStyle=color; //context 색을 바꿔준다 (override)
     //즉 오버로드를 통해서 타겟(클릭된) 속성에 맞는 값으로 strokeStyle을 변경 (색바꿔준다는뜻)
+
+    ctx.fillStyle =color;
+    //컬러 누르면 채우기 색도 변경해주기
 }
 /*컬러를 눌렀을때 실행되는 함수 색을 바꿔주는 기능을 한다*/
 
@@ -99,9 +116,18 @@ function handleModeClick(){
     }else{
         filling=true;
         mode.innerText="Paint"
+
     }
 }
 /*모드 변경*/
+
+function handleCanvasClick(){
+    if(filling===true){
+        ctx.fillRect(0,0,CANVAS_SIZE,CANVAS_SIZE);
+    }
+    
+}
+/*채우기 함수*/
 
 if(canvas){
     canvas.addEventListener("mousemove", onMouseMove);
@@ -112,6 +138,8 @@ if(canvas){
     /*마우스에서 손때면 그림 그려지고있는거 활성화 종료해야하니*/
     canvas.addEventListener("mouseleave", stopPainting);
     /*작업도중 커서가 캔버스 밖으로 나갈경우 역시 활성화 중지*/
+    canvas.addEventListener("click",handleCanvasClick);
+    /*채우기 클릭했을때 이벤트 리스너*/
 }
 
 Array.from(colors).forEach(color=>color.addEventListener("click",handleColorClick));
