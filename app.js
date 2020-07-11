@@ -14,6 +14,9 @@ const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 /*버튼 모드 변경을 위한 버튼 아이디 요소 가져온다*/
 
+const saveBtn = document.getElementById("jsSave");
+/*세이브 버튼 가져와야지*/
+
 const INITIAL_COLOR="#2c2c2c";
 
 const CANVAS_SIZE=700;
@@ -22,6 +25,10 @@ const CANVAS_SIZE=700;
 canvas.width= CANVAS_SIZE;
 canvas.height= CANVAS_SIZE;
 /*pixel modifier 선언 얘 없으면 작동안해*/
+
+ctx.fillStyle="white";
+ctx.fillRect(0,0,CANVAS_SIZE,CANVAS_SIZE);
+/*캔버스 배경 초기화*/
 
 ctx.strokeStyle=INITIAL_COLOR;
 /*캔버스 내부 색을 칠하기 위해 사용되는 strokeStyle*/
@@ -129,6 +136,30 @@ function handleCanvasClick(){
 }
 /*채우기 함수*/
 
+function handleCM(event){
+    event.preventDefault();//우클릭 방지 코드
+}
+//context 메뉴 관리하는 함수 우클릭 방지
+
+function handleSaveClick(){
+    //캔버스의 내용물을 image로 얻는게 1단계
+    const image= canvas.toDataURL();
+    //console.log(image);
+    
+    const link=document.createElement("a");
+    //해당링크를 다운로드 하라는  html태그 생성
+    
+    link.href=image;
+    link.download = "PaintJS[EXPORT]";
+    //두줄은 다운로드 하는 코드 
+
+    link.click();
+    //이제 거짓클릭을 만드는거야
+
+
+}
+/*저장 기능 함수*/
+
 if(canvas){
     canvas.addEventListener("mousemove", onMouseMove);
     /*캔버스가 있는지 확인 있다면 해당 함수 실행*/
@@ -139,7 +170,9 @@ if(canvas){
     canvas.addEventListener("mouseleave", stopPainting);
     /*작업도중 커서가 캔버스 밖으로 나갈경우 역시 활성화 중지*/
     canvas.addEventListener("click",handleCanvasClick);
-    /*채우기 클릭했을때 이벤트 리스너*/
+    /*채우기모드에서 캔버스를 클릭했을때 이벤트 리스너*/
+    canvas.addEventListener("contextmenu",handleCM);
+    /*이미지 우클릭했을때 나오는 창 없애는거*/
 }
 
 Array.from(colors).forEach(color=>color.addEventListener("click",handleColorClick));
@@ -153,4 +186,8 @@ if(range){
 
 if(mode){
     mode.addEventListener("click",handleModeClick);
+}
+
+if(saveBtn){
+    saveBtn.addEventListener("click",handleSaveClick);
 }
